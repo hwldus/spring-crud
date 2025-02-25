@@ -31,4 +31,21 @@ public class AuthorService {
     public List<Author> getAllAuthors() {
         return authorRepository.findAll();
     }
+
+    //저자 수정
+    @Transactional
+    public Author updateAuthor(Long id, AuthorDTO authorDTO) {
+        Author author = authorRepository.findById(id).orElseThrow(() -> new IllegalStateException("저자를 찾을 수 없습니다."));
+        if(authorDTO.getName() != null && !authorDTO.getName().trim().isEmpty()) {
+            author.setName(authorDTO.getName());
+        }
+        if (authorDTO.getEmail() != null && !authorDTO.getEmail().trim().isEmpty()) {
+            if (authorRepository.findByEmail(authorDTO.getEmail()).isPresent()) {
+                throw new IllegalStateException("이미 존재하는 이메일입니다.");
+            }
+            author.setEmail(authorDTO.getEmail());
+        }
+        return authorRepository.save(author);
+    }
+
 }

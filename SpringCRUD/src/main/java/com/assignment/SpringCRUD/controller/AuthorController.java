@@ -31,4 +31,11 @@ public class AuthorController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(authorDTOs);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO) {
+        Author updateAuthor = authorService.updateAuthor(id, authorDTO);
+        AuthorDTO updateAuthorDTO = new AuthorDTO(updateAuthor.getName(), updateAuthor.getEmail());
+        return ResponseEntity.ok(updateAuthorDTO);
+    }
 }
