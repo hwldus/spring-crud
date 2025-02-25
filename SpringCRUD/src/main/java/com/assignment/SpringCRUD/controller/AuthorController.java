@@ -1,7 +1,9 @@
 package com.assignment.SpringCRUD.controller;
 
 import com.assignment.SpringCRUD.dto.AuthorDTO;
+import com.assignment.SpringCRUD.dto.BookDTO;
 import com.assignment.SpringCRUD.model.Author;
+import com.assignment.SpringCRUD.model.Book;
 import com.assignment.SpringCRUD.service.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,16 @@ public class AuthorController {
                 .map(author -> new AuthorDTO(author.getId(), author.getName(), author.getEmail()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(authorDTOs);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable Long id) {
+        Author author = authorService.getAuthorById(id);
+        AuthorDTO authorDTO = AuthorDTO.builder()
+                .id(author.getId())
+                .name(author.getName())
+                .email(author.getEmail())
+                .build();
+        return ResponseEntity.ok(authorDTO);
     }
 
     @PatchMapping("/{id}")

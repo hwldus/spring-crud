@@ -32,6 +32,12 @@ public class AuthorService {
         return authorRepository.findAll();
     }
 
+    //저자 상세조회
+    public Author getAuthorById(Long id) {
+        return authorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 id 입니다."));
+    }
+
     //저자 수정
     @Transactional
     public Author updateAuthor(Long id, AuthorDTO authorDTO) {
