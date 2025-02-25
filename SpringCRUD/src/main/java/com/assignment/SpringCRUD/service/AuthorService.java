@@ -48,4 +48,11 @@ public class AuthorService {
         return authorRepository.save(author);
     }
 
+    //저자 삭제
+    @Transactional
+    public void deleteAuthor(Long id) {
+        Author author = authorRepository.findById(id).orElseThrow(() -> new IllegalStateException("저자를 찾을 수 없습니다."));
+        authorRepository.delete(author);
+    }
+
 }

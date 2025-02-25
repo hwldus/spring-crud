@@ -3,6 +3,7 @@ package com.assignment.SpringCRUD.controller;
 import com.assignment.SpringCRUD.dto.AuthorDTO;
 import com.assignment.SpringCRUD.model.Author;
 import com.assignment.SpringCRUD.service.AuthorService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +38,15 @@ public class AuthorController {
         Author updateAuthor = authorService.updateAuthor(id, authorDTO);
         AuthorDTO updateAuthorDTO = new AuthorDTO(updateAuthor.getName(), updateAuthor.getEmail());
         return ResponseEntity.ok(updateAuthorDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAuthor(@PathVariable Long id) {
+        try {
+            authorService.deleteAuthor(id);
+            return ResponseEntity.ok("저자 삭제");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("저자를 찾을 수 없습니다.");
+        }
     }
 }
