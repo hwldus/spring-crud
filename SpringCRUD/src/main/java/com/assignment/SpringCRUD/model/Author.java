@@ -1,5 +1,6 @@
 package com.assignment.SpringCRUD.model;
 
+import com.assignment.SpringCRUD.dto.AuthorDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,9 @@ public class Author {
     private String email;
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> books;
+
+    public Author(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
 }

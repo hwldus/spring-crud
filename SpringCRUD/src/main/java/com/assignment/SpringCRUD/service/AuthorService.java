@@ -1,5 +1,6 @@
 package com.assignment.SpringCRUD.service;
 
+import com.assignment.SpringCRUD.dto.AuthorDTO;
 import com.assignment.SpringCRUD.model.Author;
 import com.assignment.SpringCRUD.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
@@ -13,16 +14,20 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
+    // 저자 한명 저장
     @Transactional
-    public Author createAuthor(Author author) {
-        if(author.getName() == null || author.getName().trim().isEmpty()) {
+    public Author createAuthor(AuthorDTO authorDTO) {
+        if(authorDTO.getName() == null || authorDTO.getName().trim().isEmpty()) {
             throw new IllegalStateException("이름은 필수 입력입니다.");
         }
-        if(authorRepository.findByEmail(author.getEmail()).isPresent()) {
+        if(authorRepository.findByEmail(authorDTO.getEmail()).isPresent()) {
             throw new IllegalStateException("이미 존재하는 이메일입니다.");
         }
+        Author author = new Author(authorDTO.getName(), authorDTO.getEmail());
         return authorRepository.save(author);
     }
+
+    //모든 저자 검색
     public List<Author> getAllAuthors() {
         return authorRepository.findAll();
     }
