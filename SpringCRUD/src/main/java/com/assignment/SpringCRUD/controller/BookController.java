@@ -1,9 +1,9 @@
 package com.assignment.SpringCRUD.controller;
 
 import com.assignment.SpringCRUD.dto.BookDTO;
-import com.assignment.SpringCRUD.dto.BookResponseDTO;
 import com.assignment.SpringCRUD.model.Book;
 import com.assignment.SpringCRUD.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody BookDTO bookDTO) {
+    public ResponseEntity<Book> createBook(@Valid @RequestBody BookDTO bookDTO) {
         Book savedBook = bookService.createBook(bookDTO);
         return ResponseEntity.ok(savedBook);
     }
@@ -45,7 +45,7 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
+    public ResponseEntity<Book> updateBook(@PathVariable Long id, @Valid @RequestBody BookDTO bookDTO) {
         Book updatedBook = bookService.updateBook(id, bookDTO);
         return ResponseEntity.ok(updatedBook);
     }
@@ -54,7 +54,7 @@ public class BookController {
     public ResponseEntity<String> deleteBook(@PathVariable Long id) {
         try {
             bookService.deleteBook(id);
-            return ResponseEntity.ok("책 삭제");
+            return ResponseEntity.ok("도서가 삭제되었습니다.");
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("책을 찾을 수 없습니다.");
         }
