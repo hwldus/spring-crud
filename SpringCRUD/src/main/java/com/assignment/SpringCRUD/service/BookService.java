@@ -70,7 +70,7 @@ public class BookService {
     //책 수정
     @Transactional
     public Book updateBook(Long id, BookDTO bookDTO) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalStateException("책을 찾을 수 없습니다."));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalStateException("도서를 찾을 수 없습니다."));
         book.setTitle(bookDTO.getTitle());
         book.setDescription(bookDTO.getDescription());
         if(!isbn.isValidISBN(bookDTO.getIsbn())) {
@@ -89,7 +89,7 @@ public class BookService {
     //책 삭제
     @Transactional
     public void deleteBook(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalStateException("책을 찾을 수 없습니다."));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalStateException("도서를 찾을 수 없습니다."));
         bookRepository.delete(book);
     }
 }
