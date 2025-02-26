@@ -1,6 +1,7 @@
 package com.assignment.SpringCRUD.service;
 
 import com.assignment.SpringCRUD.dto.BookDTO;
+import com.assignment.SpringCRUD.isbn;
 import com.assignment.SpringCRUD.model.Author;
 import com.assignment.SpringCRUD.model.Book;
 import com.assignment.SpringCRUD.repository.AuthorRepository;
@@ -30,6 +31,12 @@ public class BookService {
         }
         Author author = authorRepository.findById(bookDTO.getAuthor_id())
                 .orElseThrow(() -> new IllegalStateException("저자를 찾을 수 없습니다."));
+        if(!isbn.isValidISBN(bookDTO.getIsbn())) {
+            throw new IllegalArgumentException("isbn이 유효하지 않습니다.");
+        }
+        if(bookRepository.existsByIsbn(bookDTO.getIsbn())) {
+            throw new IllegalArgumentException("이미 존재하는 isbn입니다.");
+        }
         Book book = Book.builder()
                 .title(bookDTO.getTitle())
                 .description(bookDTO.getDescription())

@@ -20,6 +20,9 @@ public class AuthorService {
         if(authorDTO.getName() == null || authorDTO.getName().trim().isEmpty()) {
             throw new IllegalStateException("이름은 필수 입력입니다.");
         }
+        if(authorDTO.getEmail() == null || authorDTO.getEmail().trim().isEmpty()) {
+            throw new IllegalStateException("이메일은 필수 입력입니다.");
+        }
         if(authorRepository.findByEmail(authorDTO.getEmail()).isPresent()) {
             throw new IllegalStateException("이미 존재하는 이메일입니다.");
         }
@@ -45,11 +48,17 @@ public class AuthorService {
         if(authorDTO.getName() != null && !authorDTO.getName().trim().isEmpty()) {
             author.setName(authorDTO.getName());
         }
+        else if(authorDTO.getName() == null || authorDTO.getName().trim().isEmpty()) {
+            throw new IllegalStateException("이름은 필수 입력입니다.");
+        }
         if (authorDTO.getEmail() != null && !authorDTO.getEmail().trim().isEmpty()) {
             if (authorRepository.findByEmail(authorDTO.getEmail()).isPresent()) {
                 throw new IllegalStateException("이미 존재하는 이메일입니다.");
             }
             author.setEmail(authorDTO.getEmail());
+        }
+        else if(authorDTO.getEmail() == null || authorDTO.getEmail().trim().isEmpty()) {
+            throw new IllegalStateException("이메일은 필수 입력입니다.");
         }
         return authorRepository.save(author);
     }
