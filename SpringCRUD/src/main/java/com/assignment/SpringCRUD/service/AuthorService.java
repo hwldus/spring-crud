@@ -6,6 +6,7 @@ import com.assignment.SpringCRUD.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorService {
@@ -31,8 +32,15 @@ public class AuthorService {
     }
 
     //모든 저자 검색
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
+    public List<AuthorDTO> getAllAuthors() {
+        List<Author> authors = authorRepository.findAll();
+        return authors.stream()
+                .map(author -> AuthorDTO.builder()
+                        .id(author.getId())
+                        .name(author.getName())
+                        .email(author.getEmail())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     //저자 상세조회

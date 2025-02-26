@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/authors")
@@ -25,13 +24,10 @@ public class AuthorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AuthorDTO>> getAllAuthors() {
-        List<Author> authors = authorService.getAllAuthors();
-        List<AuthorDTO> authorDTOs = authors.stream()
-                .map(author -> new AuthorDTO(author.getId(), author.getName(), author.getEmail()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(authorDTOs);
+    public List<AuthorDTO> getAllAuthors() {
+        return authorService.getAllAuthors();
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable Long id) {
         Author author = authorService.getAuthorById(id);
@@ -44,10 +40,9 @@ public class AuthorController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO) {
+    public ResponseEntity<Author> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO) {
         Author updateAuthor = authorService.updateAuthor(id, authorDTO);
-        AuthorDTO updateAuthorDTO = new AuthorDTO(updateAuthor.getName(), updateAuthor.getEmail());
-        return ResponseEntity.ok(updateAuthorDTO);
+        return ResponseEntity.ok(updateAuthor);
     }
 
     @DeleteMapping("/{id}")

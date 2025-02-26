@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,13 +50,14 @@ public class BookService {
     public List<BookDTO> getAllBooks() {
         List<Book> books = bookRepository.findAll();
         return books.stream()
-                .map(book -> new BookDTO(
-                        book.getId(),
-                        book.getTitle(),
-                        book.getDescription(),
-                        book.getIsbn(),
-                        book.getPublication_date(),
-                        book.getAuthor().getId()))
+                .map(book -> BookDTO.builder()
+                        .id(book.getId())
+                        .title(book.getTitle())
+                        .description(book.getDescription())
+                        .isbn(book.getIsbn())
+                        .publication_date(book.getPublication_date())
+                        .author_id(book.getAuthor().getId())
+                        .build())
                 .collect(Collectors.toList());
     }
 
